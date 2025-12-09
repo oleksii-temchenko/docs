@@ -1,0 +1,61 @@
+services:
+
+  nginx:
+    container_name: fitecoltd-nginx
+    build: ./docker/containers/nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./docker/containers/nginx/config/wiki.conf:/etc/nginx/conf.d/wiki.conf:ro
+
+      - ./docker/containers/nginx/config/vaultwarden.conf:/etc/nginx/conf.d/vaultwarden.conf:ro
+
+      - ./docker/containers/nginx/logs:/etc/logs/nginx
+    command: '/bin/sh -c ''while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g "daemon off;"'''
+    depends_on:
+      - wiki
+      - vaultwarden
+
+  vaultwarden:
+    image: vaultwarden/server:latest
+    container_name: fitecoltd-vaultwarden
+    restart: unless-stopped
+    env_file:
+      - ./docker/containers/vaultwarden/.env
+    ports:
+      - "8080:80"        # внешний порт -> внутренний порт контейнера
+    volumes:
+      - ./docker/containers/vaultwarden/data:/data  # папка для хранения базы и конфигов
+
+  wiki:
+    image: requarks/wiki:latest
+    container_name: fitecoltd-wikijs
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      DB_TYPE: postgres
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: wikijs
+      DB_PASS: wikijs_pass
+      DB_NAME: wikijs
+    volumes:
+      - ./docker/containers/wiki/data:/var/lib/wiki
+
+  db:
+    image: postgres:13
+    container_name: fitecoltd-wikijs-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: wikijs
+      POSTGRES_PASSWORD: wikijs_pass
+      POSTGRES_DB: wikijs
+    volumes:
+      - ./docker/containers/db/data:/var/lib/postgresql/data
+
+
+networks:
+  default:
+    driver: bridge

@@ -1,0 +1,136 @@
+server {
+    listen 80;
+    listen [::]:80;
+    root /algofxpro;
+    index main.php index.html;
+    server_name algofxpro.test;
+    error_log /etc/logs/nginx/nginx_error.log;
+    access_log /etc/logs/nginx/nginx_access.log;
+    charset utf-8;
+
+    location / {
+        try_files $uri $uri/ /main.php?$args;
+    }
+
+    client_max_body_size 200m;
+
+    location ~ \.php$ {
+       fastcgi_split_path_info ^(.+\.php)(/.+)$;
+       fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+       fastcgi_pass algofxpro-php-fpm;
+       fastcgi_index main.php;
+       include fastcgi_params;
+    }
+
+    location ~ /\.(ht|svn|git) {
+        deny all;
+    }
+}
+
+## PHP-FPM ##
+upstream algofxpro-php-fpm {
+    server algofxpro:9000;
+}
+
+server {
+    listen 80;
+    listen [::]:80;
+    root /forex;
+    index main.php index.html;
+    server_name forex.test;
+    error_log /etc/logs/nginx/nginx_error.log;
+    access_log /etc/logs/nginx/nginx_access.log;
+    charset utf-8;
+
+    location / {
+        try_files $uri $uri/ /main.php?$args;
+    }
+
+    client_max_body_size 200m;
+
+    location ~ \.php$ {
+       fastcgi_split_path_info ^(.+\.php)(/.+)$;
+       fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+       fastcgi_pass forex-php-fpm;
+       fastcgi_index main.php;
+       include fastcgi_params;
+    }
+
+    location ~ /\.(ht|svn|git) {
+        deny all;
+    }
+}
+
+## PHP-FPM ##
+upstream forex-php-fpm {
+    server forex:9000;
+}
+
+server {
+    listen 80;
+    listen [::]:80;
+    root /gloryft;
+    index main.php index.html;
+    server_name forsites.test;
+    error_log /etc/logs/nginx/nginx_error.log;
+    access_log /etc/logs/nginx/nginx_access.log;
+    charset utf-8;
+
+    location / {
+        try_files $uri $uri/ /main.php?$args;
+    }
+
+    client_max_body_size 200m;
+
+    location ~ \.php$ {
+       fastcgi_split_path_info ^(.+\.php)(/.+)$;
+       fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+       fastcgi_pass gloryft-php-fpm;
+       fastcgi_index main.php;
+       include fastcgi_params;
+    }
+
+    location ~ /\.(ht|svn|git) {
+        deny all;
+    }
+}
+
+## PHP-FPM ##
+upstream gloryft-php-fpm {
+    server gloryft:9000;
+}
+
+server {
+    listen 80;
+    listen [::]:80;
+    root /multiglory/public;
+    index main.php index.html;
+    server_name multiglory.test;
+    error_log /etc/logs/nginx/nginx_error.log;
+    access_log /etc/logs/nginx/nginx_access.log;
+    charset utf-8;
+
+    location / {
+        try_files $uri $uri/ /main.php?$args;
+    }
+
+    client_max_body_size 200m;
+
+    location ~ \.php$ {
+       fastcgi_split_path_info ^(.+\.php)(/.+)$;
+       fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+       fastcgi_pass multiglory-php-fpm;
+       fastcgi_index main.php;
+       include fastcgi_params;
+    }
+
+    location ~ /\.(ht|svn|git) {
+        deny all;
+    }
+}
+
+## PHP-FPM ##
+upstream multiglory-php-fpm {
+    server multiglory:9000;
+}
+
