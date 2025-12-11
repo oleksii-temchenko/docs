@@ -22,7 +22,7 @@ services:
     container_name: fitecoltd-vaultwarden
     restart: unless-stopped
     env_file:
-      - ./docker/containers/vaultwarden/.env
+      - ./docker/containers/vaultwarden/conf/.env
     ports:
       - "8080:80"        # внешний порт -> внутренний порт контейнера
     volumes:
