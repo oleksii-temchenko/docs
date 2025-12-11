@@ -1,3 +1,3 @@
-Конфиг для vaultwarden и wikijs
+Окружение для vaultwarden и wikijs
 
 docker compose up -d
