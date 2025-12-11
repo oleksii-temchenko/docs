@@ -41,6 +41,7 @@ services:
       DB_USER: wikijs
       DB_PASS: wikijs_pass
       DB_NAME: wikijs
+      VOLUME_PATH: /var/lib/wiki/uploads
     volumes:
       - ./docker/containers/wiki/data:/var/lib/wiki
 
